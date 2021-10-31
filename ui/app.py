@@ -389,53 +389,55 @@ def init():
     
     return df_test_static,T,C,times
 
-df,T,C,times = init()
 st.title('СОВЕТЧИК ПРОДУВКИ МЕТАЛЛА')
+if st.button('Я понимаю, что это просто демонстрация и принимаю все условия!'):
+    df,T,C,times = init()
+    #Сайдбар для управляющих параметров и моделирования
+    st.sidebar.header('Моделирование управляющих параметров')
 
-#Сайдбар для управляющих параметров и моделирования
-st.sidebar.header('Моделирование управляющих параметров')
+    var_RAS = st.sidebar.slider('Расход кислорода на продувку', min_value=0, max_value=1200, value=398,step=1)
+    st.sidebar.metric(label="Расход кислорода", value=f"{var_RAS}", delta=f"{412-var_RAS}")
+    #Тут может быть модель изменения положения кислорода - график
+    # fig, ax = plt.subplots()
+    # ax.plot(np.array(times),np.array(C))
+    # st.sidebar.pyplot(fig)
+    var_POL = st.sidebar.slider('Положение фурмы для продувки', min_value=0., max_value=18., value=4.64,step=0.1)
+    st.sidebar.metric(label="Положение фурмы", value=f"{var_POL}", delta=f"{np.round(4.58-var_POL,2)}")
+    #Тут может быть модель изменения положения фурмы - график
+    #: TODO - убрать заглушки
+    # fig, ax = plt.subplots()
+    # ax.plot(np.array(times),np.array(T))
+    # st.sidebar.pyplot(fig)
 
-var_RAS = st.sidebar.slider('Расход кислорода на продувку', min_value=0, max_value=1200, value=398,step=1)
-st.sidebar.metric(label="Расход кислорода", value=f"{var_RAS}", delta=f"{412-var_RAS}")
-#Тут может быть модель изменения положения кислорода - график
-# fig, ax = plt.subplots()
-# ax.plot(np.array(times),np.array(C))
-# st.sidebar.pyplot(fig)
-var_POL = st.sidebar.slider('Положение фурмы для продувки', min_value=0., max_value=18., value=4.64,step=0.1)
-st.sidebar.metric(label="Положение фурмы", value=f"{var_POL}", delta=f"{np.round(4.58-var_POL,2)}")
-#Тут может быть модель изменения положения фурмы - график
-#: TODO - убрать заглушки
-# fig, ax = plt.subplots()
-# ax.plot(np.array(times),np.array(T))
-# st.sidebar.pyplot(fig)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric(label="Температура через 5 минут", value=f"{T[-1]} °", delta=f"{T[-1]-T[0]} °")
+        fig, ax = plt.subplots()
+        ax.plot(np.array(times),np.array(T))
+        st.pyplot(fig)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.metric(label="Температура через 5 минут", value=f"{T[-1]} °", delta=f"{T[-1]-T[0]} °")
-    fig, ax = plt.subplots()
-    ax.plot(np.array(times),np.array(T))
-    st.pyplot(fig)
+    with col2:
+        st.metric(label="Углерод через 5 минут", value=f"{C[-1]}", delta=f"{C[-1]-C[0]}")
+        fig, ax = plt.subplots()
+        ax.plot(np.array(times),np.array(C))
+        st.pyplot(fig)
 
-with col2:
-    st.metric(label="Углерод через 5 минут", value=f"{C[-1]}", delta=f"{C[-1]-C[0]}")
-    fig, ax = plt.subplots()
-    ax.plot(np.array(times),np.array(C))
-    st.pyplot(fig)
+    st.header('Похожие плавки: ')
 
-st.header('Похожие плавки: ')
+    res,cur_plavki = get_history()
+    cur_plavki = cur_plavki[cur_plavki.NPLV==NPLVKI]
+    _,n = next(cur_plavki.iterrows())
 
-res,cur_plavki = get_history()
-cur_plavki = cur_plavki[cur_plavki.NPLV==NPLVKI]
-_,n = next(cur_plavki.iterrows())
-
-for col in ['plavka_NAPR_ZAD', 'plavka_NMZ','plavka_TIPE_FUR','plavka_STFUT','plavka_ST_FURM',\
-            'plavka_TIPE_GOL', 'plavka_ST_GOL']:
-#     if col not in n.keys():
-#         continue
-    res1 = res[(res[col]==n[col])]
-    if len(res1)>0:
-        res = res1
-    else:
-        st.markdown('Полностью аналогичных плавок не найдено!')
-        break
-st.table(res.head(5))
+    for col in ['plavka_NAPR_ZAD', 'plavka_NMZ','plavka_TIPE_FUR','plavka_STFUT','plavka_ST_FURM',\
+                'plavka_TIPE_GOL', 'plavka_ST_GOL']:
+    #     if col not in n.keys():
+    #         continue
+        res1 = res[(res[col]==n[col])]
+        if len(res1)>0:
+            res = res1
+        else:
+            st.markdown('Полностью аналогичных плавок не найдено!')
+            break
+    st.table(res.head(5))
+else:
+    st.write('Здесь будет само приложение!')

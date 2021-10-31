@@ -1,0 +1,10 @@
+FROM python:3.9.6
+WORKDIR /app
+RUN pip3 install streamlit pandas numpy scikit-learn datatable torch seaborn matplotlib
+COPY ./data /app/data 
+COPY ./ui /app/ui
+COPY ./models /app/models
+EXPOSE 8501
+WORKDIR /app/ui
+ENTRYPOINT ["streamlit", "run"]
+CMD ["app.py"]
