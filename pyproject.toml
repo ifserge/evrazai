@@ -37,6 +37,7 @@ numba = "^0.54.0"
 PyMySQL = "^1.0.2"
 pytorch-forecasting = "0.9.1"
 dask = "2021.03.0"
+streamlit = "*"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"
