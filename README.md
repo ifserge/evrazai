@@ -18,6 +18,7 @@ streamlit run app.py --server.address=127.0.0.1
 docker build -t evrazappui:latest -f ./dockerfiles/DockerfileUI .
 docker run -d -p 127.0.0.1:8501:8501 evrazappui:latest
 ```
+И открыть Интерфейс(http://127.0.0.1:8501/)
 
 #### Для запуска решения, генерирующего сабмит
 ```bash
