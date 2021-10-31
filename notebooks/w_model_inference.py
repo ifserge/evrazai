@@ -352,7 +352,7 @@ test_dl = DataLoader(test_ds, shuffle=False, batch_size=1, num_workers=0)
 
 model = EvrazModel(config).to(device)
 
-for i in range(3):
+for i in range(4):
     model.load_state_dict(torch.load('w_model'+str(i) + '.pth'))
     model.eval()
     outs = []
@@ -369,7 +369,7 @@ for i in range(3):
             outs.append(out.detach().cpu().numpy())
     outs = np.concatenate(outs, axis=0)
     outs = target_scaler.inverse_transform(outs)
-    df_test_static['TST'] += outs[:,0] / 3.0
-    df_test_static['C'] += outs[:,1] / 3.0
+    df_test_static['TST'] += outs[:,0] / 4.0
+    df_test_static['C'] += outs[:,1] / 4.0
 q = df_test_static[['NPLV','TST','C']].copy()
-q.to_csv('w_model_3_folds.csv',index=False)
+q.to_csv('w_model_4_folds.csv',index=False)
