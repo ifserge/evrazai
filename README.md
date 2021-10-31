@@ -24,4 +24,4 @@ poetry run solution.sh
 
 В решении использованы реккурентные сети для сбора композиции лома и для анализа управляющих действий (produv) и данных газовых датчиков (gas).
 
-[Схема сетки](https://github.com/ifserge/evrazai/blob/main/schema.png)
+![Схема сетки](https://github.com/ifserge/evrazai/blob/main/schema.png)
