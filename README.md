@@ -33,6 +33,4 @@ poetry run solution.sh
 ![Схема сетки](https://github.com/ifserge/evrazai/blob/main/schema.png)
 
 <!-- CONTACT -->
-## Авторы
-
-Authors: [[@ifserge](https://github.com/ifserge),[@DbusAI](https://github.com/DBusAI))
+Авторы: [[@ifserge](https://github.com/ifserge),[@DbusAI](https://github.com/DBusAI))
